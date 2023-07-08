@@ -32,6 +32,7 @@ func (ct *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func RunHttpServer(filePath string, style string, port string) {
+	log.Println("serving at port:", port)
 	th := &HttpHandler{counter: 0, style: style, port: port, filePath: filePath}
 	http.Handle("/", th)
 	http.ListenAndServe(":"+port, nil)
