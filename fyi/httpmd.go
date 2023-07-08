@@ -17,12 +17,13 @@ type HttpHandler struct {
 	counter  int
 	port     string
 	filePath string
+	style    string
 }
 
 func (ct *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	ct.counter++
 	log.Println("count:", ct.counter)
-	content, err := processingContent(ct.filePath)
+	content, err := processingContent(ct.filePath, ct.style)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -30,13 +31,13 @@ func (ct *HttpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, *content)
 }
 
-func RunHttpServer(filePath string, port string) {
-	th := &HttpHandler{counter: 0, port: port, filePath: filePath}
+func RunHttpServer(filePath string, style string, port string) {
+	th := &HttpHandler{counter: 0, style: style, port: port, filePath: filePath}
 	http.Handle("/", th)
 	http.ListenAndServe(":"+port, nil)
 }
 
-func processingContent(filePath string) (*string, error) {
+func processingContent(filePath string, style string) (*string, error) {
 	htmlContent := GetHtmlContent()
 
 	var mdBytes []byte = nil
@@ -55,6 +56,8 @@ func processingContent(filePath string) (*string, error) {
 	html := MdToHTML(mdBytes)
 
 	htmlContent = strings.Replace(htmlContent, "{{content}}", html, -1)
+
+	htmlContent = strings.Replace(htmlContent, "{{style}}", style, -1)
 
 	newHtml := ""
 

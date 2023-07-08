@@ -28,24 +28,7 @@ func GetHtmlContent() string {
 <body class="darkmode">
 
 <style>
-.darkmode {
-	background-color: black;
-	color: white;
-}
-.darkmode a {
-	color: hotpink;
-	font-size: 1.1em;
-}
-code {
-	font-family: Consolas,"courier new";
-	color: hotpink;
-	background: black;
-	border-style: dotted;
-	border-color: darkgray;
-	border-width: 0.01em;
-	padding: 0.3em;
-	font-size: 1.1em;
-}
+{{style}}
 </style>
 <div class"cpcontainer">
 
